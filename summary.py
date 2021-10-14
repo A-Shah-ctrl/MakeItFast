@@ -2,16 +2,18 @@ import nltk
 from nltk.stem import PorterStemmer
 import nltk.tokenize
 from nltk.corpus import stopwords
+from extract_pdf import Extractor
 from extract import Extract
+import math
+import operator
 
+def summarize(path: str, mode: int):
 
-WEBSITE = "https://www.cbc.ca/news/politics/trudeau-border-restrictions-coming-weeks-1.6075398"
-
-def summarize(website: str):
-
-    # Content of the website in text format
-    content = Extract(website).get_content()
-
+    if mode == 1:
+        # Content of the pdf in text format
+        content = Extractor(path).get_text()
+    else:
+        content = Extract(path).get_content()
     #Separate the content into individual sentences
     sentences = nltk.sent_tokenize(content)
 
@@ -22,6 +24,7 @@ def summarize(website: str):
 
     #Find frequencies of the words
     frequencies = {}
+    total_words = len(words)
     for word in words:
         if word not in ignore:
             base = base_stem.stem(word)
@@ -30,34 +33,40 @@ def summarize(website: str):
             except KeyError:
                 frequencies[base] = 1
 
+    #Calculating the probabilities of the words in the document
+    probabilities = {}
+    for f in frequencies:
+        probabilities[f] = frequencies[f]/total_words
 
-    #Calculate the frequency of each sentence
     importance = {}
-    length = len(sentences)
-    overall = 0
-
-    for i in range(length):
+    for i in range(len(sentences)):
         total = 0
         num_words = 0
+
         for j in sentences[i]:
             base = base_stem.stem(j)
             try:
-                total += frequencies[base]
+                total += probabilities[base]
                 num_words += 1
             except KeyError:
                 continue
-        weight = total/num_words
+        weight = total / num_words
         importance[i] = weight
-        overall += weight
 
-    cut_off = overall/length
-    summary = ''
-    for i in range(length):
-        if importance[i] >= cut_off:
-            summary += sentences[i]
+    rounds = int(math.sqrt(len(sentences)))
+    text = ""
+    for r in range(rounds):
+        index = max(importance.items(), key = lambda x : x[1])
+        text += sentences[index[0]]
+        importance.pop(index[0])
 
-    return summary
+    return text
 
 if __name__=="__main__":
-    print(summarize(WEBSITE))
+    print("Welcome to MakeItFast. This is a basic extraction summarizer that is capable of summarizinga "
+          "Wikipedia page and contents of a pdf file.")
+    mode = int(input("Press 0 for Wikipedia Article\nPress 1 for a PDF\nYour preference: "))
+    path = str(input("Enter the path of the PDF or the url of the website: "))
+    print("============= ARTICLE SUMMARY =============\n\n\n")
+    print(summarize(path,mode))
 

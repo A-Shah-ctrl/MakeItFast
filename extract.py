@@ -34,6 +34,3 @@ class Extract():
             content += para.text
         return content
 
-# if __name__ == "__main__":
-#     e = Extract("https://en.wikipedia.org/wiki/Mariam-uz-Zamani")
-#     print(e.content)
