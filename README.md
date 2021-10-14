@@ -11,3 +11,6 @@ with computer generated PDF's.
 # Future Improvements
 1) Creating a GUI for user friendliness
 2) Implementing Abstraction Summarization rather than Extraction Summarization
+
+# Source and Motivation
+Article : https://www.cis.upenn.edu/~nenkova/papers/ipm.pdf
