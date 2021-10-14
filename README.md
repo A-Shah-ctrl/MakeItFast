@@ -1,3 +1,3 @@
 # MakeItFast
 
-A Chrome Extension that summarizes the content of a webpage for the user. 
+A python based application that takes in a pdf document and outputs a summary of the pdf document.
