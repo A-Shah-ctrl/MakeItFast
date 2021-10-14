@@ -1,3 +1,3 @@
 # MakeItFast
 
-A python based application that takes in a pdf document and outputs a summary of the pdf document.
+A Python Summarizer that uses Extraction Summarization to summarize texts. At the moment, this summarizer is able to summarize Wikipedia Articles and PDF Articles. 
