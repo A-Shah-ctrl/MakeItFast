@@ -8,6 +8,6 @@ with computer generated PDF's.
 1) pdfplumber
 2) BeautifulSoup
 
-#Future Improvements
+# Future Improvements
 1) Creating a GUI for user friendliness
 2) Implementing Abstraction Summarization rather than Extraction Summarization
